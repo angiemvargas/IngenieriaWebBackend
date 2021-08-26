@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp target/classes:target/dependency/* com.udea.app
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* com.udea.app.AppApplication
