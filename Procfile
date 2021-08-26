@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp target/classes:target/dependency/* com.udea.app.AppApplication
+web: java -Dserver.port=$PORT -jar target/IngenieriaWebBackend-0.0.1-SNAPSHOT.jar
