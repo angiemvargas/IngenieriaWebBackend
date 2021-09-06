@@ -32,9 +32,6 @@ import java.util.stream.Collectors;
 public class UserService {
 
     @Autowired
-    private IUserRepository iUserRepository;
-
-    @Autowired
     AuthenticationManager authenticationManager;
 
     @Autowired
@@ -52,7 +49,7 @@ public class UserService {
     @PostMapping("/create")
     public ResponseEntity createUser(@RequestBody UserRequest userRequest) {
 
-        User user = iUserRepository.findByEmail(userRequest.getEmail());
+        User user = userRepository.findByEmail(userRequest.getEmail());
 
         if (Objects.nonNull(user)) {
             return ResponseEntity
