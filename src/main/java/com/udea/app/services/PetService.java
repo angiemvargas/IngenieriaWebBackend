@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/pet")
@@ -21,6 +22,16 @@ public class PetService {
     @PostMapping
     public ResponseEntity createPet(@RequestBody Pet pet){
 
+        if(Objects.isNull(pet.getName()) || Objects.isNull(pet.getBreed()) || Objects.isNull(pet.getAge()) ||
+                Objects.isNull(pet.getEmailOwner()) || Objects.isNull(pet.getNameOwner()) || Objects.isNull(pet.getSize())){
+            return ResponseEntity
+                    .badRequest()
+                    .body(MessageResponse.builder()
+                            .message("Error: Faltan datos para el registro")
+                            .build());
+        }
+
+        pet.setCode(UUID.randomUUID().toString());
         petRepository.save(pet);
 
         return ResponseEntity.ok()
