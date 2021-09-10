@@ -1,5 +1,6 @@
 package com.udea.app.services;
 
+import com.udea.app.mail.MailService;
 import com.udea.app.models.Pet;
 import com.udea.app.repository.IPetRepository;
 import com.udea.app.services.dtos.MessageResponse;
@@ -18,6 +19,9 @@ public class PetService {
 
     @Autowired
     IPetRepository petRepository;
+
+    @Autowired
+    MailService mailService;
 
     @PostMapping
     public ResponseEntity createPet(@RequestBody Pet pet) {
@@ -98,5 +102,19 @@ public class PetService {
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(pet);
+    }
+
+
+    @GetMapping("/mail/{id}")
+    public ResponseEntity envioCorreo(@PathVariable String id) {
+
+        Pet pet = petRepository.findById(id).orElse(Pet.builder().build());
+        String mensaje = "El codigo de su mascota es: ".concat(pet.getId());
+        mailService.sendSimpleMessage(pet.getEmailOwner(), "Codigo de mascota", mensaje);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(MessageResponse.builder()
+                        .message("Ok, se envio el correo")
+                        .build());
     }
 }
