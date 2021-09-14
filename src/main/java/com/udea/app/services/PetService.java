@@ -1,5 +1,6 @@
 package com.udea.app.services;
 
+import com.udea.app.mail.MailService;
 import com.udea.app.models.Pet;
 import com.udea.app.repository.IPetRepository;
 import com.udea.app.services.dtos.MessageResponse;
@@ -19,11 +20,14 @@ public class PetService {
     @Autowired
     IPetRepository petRepository;
 
+    @Autowired
+    MailService mailService;
+
     @PostMapping
     public ResponseEntity createPet(@RequestBody Pet pet) {
 
         if (Objects.isNull(pet.getName()) || Objects.isNull(pet.getBreed()) || Objects.isNull(pet.getAge()) ||
-                Objects.isNull(pet.getEmailOwner()) || Objects.isNull(pet.getNameOwner()) || Objects.isNull(pet.getSize())
+                Objects.isNull(pet.getEmailOwner()) || Objects.isNull(pet.getNameOwner()) || Objects.isNull(pet.getWeight())
                 || Objects.isNull(pet.getPaymentMethod())) {
             return ResponseEntity
                     .badRequest()
@@ -32,7 +36,10 @@ public class PetService {
                             .build());
         }
 
-        petRepository.save(pet);
+        Pet petSave = petRepository.save(pet);
+
+        String mensaje = "El codigo de su mascota es: ".concat(petSave.getId());
+        mailService.sendSimpleMessage(petSave.getEmailOwner(), "Codigo de mascota", mensaje);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -99,4 +106,27 @@ public class PetService {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(pet);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deletePetsById(@PathVariable String id) {
+
+        Pet pet = petRepository.findById(id).orElse(Pet.builder().build());
+
+        if (Objects.isNull(pet.getName())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(MessageResponse.builder()
+                            .message("Error: la mascota no existe")
+                            .build());
+        }
+
+        petRepository.deleteById(id);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(MessageResponse.builder()
+                        .message("La mascota ha sido eliminada con exito")
+                        .build());
+    }
+
 }
