@@ -18,4 +18,6 @@ public class Scheduler {
     private String hour;
     private String teacher;
     private String idPet;
+    private String title;
+    private String namePet;
 }
