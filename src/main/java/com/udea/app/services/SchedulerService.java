@@ -26,7 +26,8 @@ public class SchedulerService {
     public ResponseEntity createAppointment(@RequestBody Scheduler scheduler){
 
         if (Objects.isNull(scheduler.getDate()) || Objects.isNull(scheduler.getHour())
-                || Objects.isNull(scheduler.getTeacher()) || Objects.isNull(scheduler.getIdPet())) {
+                || Objects.isNull(scheduler.getTeacher()) || Objects.isNull(scheduler.getIdPet())
+                || Objects.isNull(scheduler.getTitle()) || Objects.isNull(scheduler.getNamePet())) {
             return ResponseEntity
                     .badRequest()
                     .body(MessageResponse.builder()
