@@ -20,5 +20,9 @@ public class User {
     private String username;
     private String email;
     private String password;
+    private String document;
+    private String age;
+    private String eps;
+    private Integer salary;
     private List<Rol> roles;
 }

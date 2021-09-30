@@ -65,6 +65,10 @@ public class UserService {
                 .lastName(userRequest.getLastName())
                 .email(userRequest.getEmail())
                 .username(userRequest.getEmail())
+                .document(userRequest.getDocument())
+                .eps(userRequest.getEps())
+                .age(userRequest.getAge())
+                .salary(userRequest.getSalary())
                 .password(encoder.encode(userRequest.getPassword()));
 
         Rol rol;
@@ -75,8 +79,14 @@ public class UserService {
                 case "admin":
                     rol = Rol.builder().id("2").name("ADMIN").build();
                     break;
-                case "empl":
-                    rol = Rol.builder().id("3").name("EMPL").build();
+                case "profesor":
+                    rol = Rol.builder().id("3").name("PROFESOR").build();
+                    break;
+                case "gerente":
+                    rol = Rol.builder().id("4").name("GERENTE").build();
+                    break;
+                case "director":
+                    rol = Rol.builder().id("5").name("DIRECTOR").build();
                     break;
                 default:
                     rol = Rol.builder().id("1").name("USER").build();
@@ -92,6 +102,96 @@ public class UserService {
                 .message("El usuario se a creado exitosamente")
                 .build());
 
+    }
+
+
+    @PutMapping("/update")
+    public ResponseEntity updateUser(@RequestBody UserRequest userRequest) {
+
+        if (Objects.isNull(userRequest.getId()) || userRequest.getId().isEmpty()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(MessageResponse.builder()
+                            .message("Error: es necesario el id del usuario")
+                            .build());
+        }
+
+        User user = userRepository.findByEmail(userRequest.getEmail());
+
+        if (Objects.isNull(user)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(MessageResponse.builder()
+                            .message("Error: el usuario no existe")
+                            .build());
+        }
+
+        // Update user's account
+        User.UserBuilder userNew = User.builder()
+                .id(userRequest.getId())
+                .firstName(userRequest.getFirstName())
+                .lastName(userRequest.getLastName())
+                .email(userRequest.getEmail())
+                .username(userRequest.getEmail())
+                .document(userRequest.getDocument())
+                .eps(userRequest.getEps())
+                .age(userRequest.getAge())
+                .salary(userRequest.getSalary());
+                //.password(encoder.encode(userRequest.getPassword()));
+
+        Rol rol;
+        if (Objects.isNull(userRequest.getRol())) {
+            rol = Rol.builder().id("1").name("USER").build();
+        } else {
+            switch (userRequest.getRol()) {
+                case "admin":
+                    rol = Rol.builder().id("2").name("ADMIN").build();
+                    break;
+                case "profesor":
+                    rol = Rol.builder().id("3").name("PROFESOR").build();
+                    break;
+                case "gerente":
+                    rol = Rol.builder().id("4").name("GERENTE").build();
+                    break;
+                case "director":
+                    rol = Rol.builder().id("5").name("DIRECTOR").build();
+                    break;
+                default:
+                    rol = Rol.builder().id("1").name("USER").build();
+                    break;
+            }
+        }
+        userNew.roles(Collections.singletonList(rol));
+        userRepository.save(userNew.build());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(MessageResponse.builder()
+                        .message("El usuario se a actualizado exitosamente")
+                        .build());
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteById(@PathVariable String id){
+
+        User user = userRepository.findById(id).orElse(User.builder().build());
+
+        if (Objects.isNull(user.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(MessageResponse.builder()
+                            .message("Error: el usuario no existe")
+                            .build());
+        }
+
+        userRepository.deleteById(id);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(MessageResponse.builder()
+                        .message("El usuario ha sido eliminado con exito")
+                        .build());
     }
 
     @PostMapping("/login")
