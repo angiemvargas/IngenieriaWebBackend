@@ -5,6 +5,8 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Data
 @Builder
 @Document(collection = "pet")
@@ -24,4 +26,8 @@ public class Pet {
     private Boolean isShower;
     private Boolean isEducation;
     private Boolean isNursery;
+    private String noveltySpa;
+    private String noveltyEducation;
+    private String noveltyNursery;
+    private List<Specification> specifications;
 }
