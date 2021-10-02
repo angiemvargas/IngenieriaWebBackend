@@ -7,6 +7,7 @@ import com.udea.app.services.dtos.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class SchedulerService {
     private final static String CITA_NOT_FOUND = "Error: la cita no existe";
 
     @PostMapping
+    @PreAuthorize("hasRole('DIRECTOR')")
     public ResponseEntity createAppointment(@RequestBody Scheduler scheduler){
 
         if (Objects.isNull(scheduler.getDate()) || Objects.isNull(scheduler.getHour())
@@ -56,6 +58,7 @@ public class SchedulerService {
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('DIRECTOR')")
     public ResponseEntity updateAppointment(@RequestBody Scheduler scheduler) {
 
         if (Objects.isNull(scheduler.getId()) || scheduler.getId().isEmpty()) {
@@ -97,6 +100,7 @@ public class SchedulerService {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('DIRECTOR') or hasRole('PROFESOR')")
     public ResponseEntity getAllAppointment(){
 
         List<Scheduler> allAppointment = schedulerRepository.findAll();
@@ -107,6 +111,7 @@ public class SchedulerService {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('DIRECTOR') or hasRole('PROFESOR')")
     public ResponseEntity getAppointmentById(@PathVariable String id){
 
         Scheduler appointment = schedulerRepository.findById(id).orElse(Scheduler.builder().build());
@@ -125,6 +130,7 @@ public class SchedulerService {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('DIRECTOR')")
     public ResponseEntity deleteAppointmentById(@PathVariable String id) {
 
         Scheduler appointment = schedulerRepository.findById(id).orElse(Scheduler.builder().build());

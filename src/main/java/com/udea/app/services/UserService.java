@@ -13,6 +13,7 @@ import com.udea.app.services.dtos.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -47,6 +48,7 @@ public class UserService {
     JwtUtils jwtUtils;
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity createUser(@RequestBody UserRequest userRequest) {
 
         User user = userRepository.findByEmail(userRequest.getEmail());
@@ -106,6 +108,7 @@ public class UserService {
 
 
     @PutMapping("/update")
+    @PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity updateUser(@RequestBody UserRequest userRequest) {
 
         if (Objects.isNull(userRequest.getId()) || userRequest.getId().isEmpty()) {
@@ -173,6 +176,7 @@ public class UserService {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity deleteById(@PathVariable String id){
 
         User user = userRepository.findById(id).orElse(User.builder().build());
