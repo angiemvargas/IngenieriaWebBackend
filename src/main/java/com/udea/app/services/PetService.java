@@ -31,7 +31,7 @@ public class PetService {
     MailService mailService;
 
     @PostMapping
-    @PreAuthorize("hasRole('DIRECTOR')")
+    //@PreAuthorize("hasRole('DIRECTOR')")
     public ResponseEntity createPet(@RequestBody Pet pet) {
 
         if (Objects.isNull(pet.getName()) || Objects.isNull(pet.getBreed()) || Objects.isNull(pet.getAge()) ||
@@ -77,7 +77,7 @@ public class PetService {
     }
 
     @PutMapping
-    @PreAuthorize("hasRole('DIRECTOR') or hasRole('PROFESOR')")
+    //@PreAuthorize("hasRole('DIRECTOR') or hasRole('PROFESOR')")
     public ResponseEntity updatePet(@RequestBody Pet pet) {
 
         if (Objects.isNull(pet.getId()) || pet.getId().isEmpty()) {
@@ -129,7 +129,7 @@ public class PetService {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('DIRECTOR') or hasRole('PROFESOR')")
+    //@PreAuthorize("hasRole('DIRECTOR') or hasRole('PROFESOR')")
     public ResponseEntity getAllPets() {
 
         List<Pet> allPet = petRepository.findAll();
@@ -140,7 +140,6 @@ public class PetService {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('DIRECTOR') or hasRole('PROFESOR')")
     public ResponseEntity getPetsById(@PathVariable String id) {
 
         Pet pet = petRepository.findById(id).orElse(Pet.builder().build());
@@ -159,7 +158,7 @@ public class PetService {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('DIRECTOR')")
+    //@PreAuthorize("hasRole('DIRECTOR')")
     public ResponseEntity deletePetsById(@PathVariable String id) {
 
         Pet pet = petRepository.findById(id).orElse(Pet.builder().build());

@@ -1,6 +1,5 @@
 package com.udea.app.services;
 
-import com.udea.app.models.Pet;
 import com.udea.app.models.Scheduler;
 import com.udea.app.repository.ISchedulerRepository;
 import com.udea.app.services.dtos.MessageResponse;
@@ -24,7 +23,7 @@ public class SchedulerService {
     private final static String CITA_NOT_FOUND = "Error: la cita no existe";
 
     @PostMapping
-    @PreAuthorize("hasRole('DIRECTOR')")
+    //@PreAuthorize("hasRole('DIRECTOR')")
     public ResponseEntity createAppointment(@RequestBody Scheduler scheduler){
 
         if (Objects.isNull(scheduler.getDate()) || Objects.isNull(scheduler.getHour())
@@ -58,7 +57,7 @@ public class SchedulerService {
     }
 
     @PutMapping
-    @PreAuthorize("hasRole('DIRECTOR')")
+    //@PreAuthorize("hasRole('DIRECTOR')")
     public ResponseEntity updateAppointment(@RequestBody Scheduler scheduler) {
 
         if (Objects.isNull(scheduler.getId()) || scheduler.getId().isEmpty()) {
@@ -100,7 +99,7 @@ public class SchedulerService {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('DIRECTOR') or hasRole('PROFESOR')")
+    //@PreAuthorize("hasRole('DIRECTOR') or hasRole('PROFESOR')")
     public ResponseEntity getAllAppointment(){
 
         List<Scheduler> allAppointment = schedulerRepository.findAll();
@@ -111,7 +110,7 @@ public class SchedulerService {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('DIRECTOR') or hasRole('PROFESOR')")
+    //@PreAuthorize("hasRole('DIRECTOR') or hasRole('PROFESOR')")
     public ResponseEntity getAppointmentById(@PathVariable String id){
 
         Scheduler appointment = schedulerRepository.findById(id).orElse(Scheduler.builder().build());
@@ -130,7 +129,7 @@ public class SchedulerService {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('DIRECTOR')")
+    //@PreAuthorize("hasRole('DIRECTOR')")
     public ResponseEntity deleteAppointmentById(@PathVariable String id) {
 
         Scheduler appointment = schedulerRepository.findById(id).orElse(Scheduler.builder().build());

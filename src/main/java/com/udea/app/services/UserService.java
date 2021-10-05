@@ -108,7 +108,7 @@ public class UserService {
 
 
     @PutMapping("/update")
-    @PreAuthorize("hasRole('GERENTE')")
+    //@PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity updateUser(@RequestBody UserRequest userRequest) {
 
         if (Objects.isNull(userRequest.getId()) || userRequest.getId().isEmpty()) {
@@ -176,7 +176,7 @@ public class UserService {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('GERENTE')")
+    //@PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity deleteById(@PathVariable String id){
 
         User user = userRepository.findById(id).orElse(User.builder().build());
