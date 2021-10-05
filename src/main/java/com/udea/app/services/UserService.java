@@ -48,7 +48,7 @@ public class UserService {
     JwtUtils jwtUtils;
 
     @PostMapping("/create")
-    //@PreAuthorize("hasRole('GERENTE')")
+    @PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity createUser(@RequestBody UserRequest userRequest) {
 
         User user = userRepository.findByEmail(userRequest.getEmail());
@@ -75,23 +75,23 @@ public class UserService {
 
         Rol rol;
         if (Objects.isNull(userRequest.getRol())) {
-            rol = Rol.builder().id("1").name("USER").build();
+            rol = Rol.builder().id("1").name("ROLE_USER").build();
         } else {
             switch (userRequest.getRol()) {
                 case "admin":
-                    rol = Rol.builder().id("2").name("ADMIN").build();
+                    rol = Rol.builder().id("2").name("ROLE_ADMIN").build();
                     break;
                 case "profesor":
                     rol = Rol.builder().id("3").name("PROFESOR").build();
                     break;
                 case "gerente":
-                    rol = Rol.builder().id("4").name("GERENTE").build();
+                    rol = Rol.builder().id("4").name("ROLE_GERENTE").build();
                     break;
                 case "director":
-                    rol = Rol.builder().id("5").name("DIRECTOR").build();
+                    rol = Rol.builder().id("5").name("ROLE_DIRECTOR").build();
                     break;
                 default:
-                    rol = Rol.builder().id("1").name("USER").build();
+                    rol = Rol.builder().id("1").name("ROLE_USER").build();
                     break;
             }
         }
@@ -108,7 +108,7 @@ public class UserService {
 
 
     @PutMapping("/update")
-    //@PreAuthorize("hasRole('GERENTE')")
+    @PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity updateUser(@RequestBody UserRequest userRequest) {
 
         if (Objects.isNull(userRequest.getId()) || userRequest.getId().isEmpty()) {
@@ -144,23 +144,23 @@ public class UserService {
 
         Rol rol;
         if (Objects.isNull(userRequest.getRol())) {
-            rol = Rol.builder().id("1").name("USER").build();
+            rol = Rol.builder().id("1").name("ROLE_USER").build();
         } else {
             switch (userRequest.getRol()) {
                 case "admin":
-                    rol = Rol.builder().id("2").name("ADMIN").build();
+                    rol = Rol.builder().id("2").name("ROLE_ADMIN").build();
                     break;
                 case "profesor":
-                    rol = Rol.builder().id("3").name("PROFESOR").build();
+                    rol = Rol.builder().id("3").name("ROLE_PROFESOR").build();
                     break;
                 case "gerente":
-                    rol = Rol.builder().id("4").name("GERENTE").build();
+                    rol = Rol.builder().id("4").name("ROLE_GERENTE").build();
                     break;
                 case "director":
-                    rol = Rol.builder().id("5").name("DIRECTOR").build();
+                    rol = Rol.builder().id("5").name("ROLE_DIRECTOR").build();
                     break;
                 default:
-                    rol = Rol.builder().id("1").name("USER").build();
+                    rol = Rol.builder().id("1").name("ROLE_USER").build();
                     break;
             }
         }
@@ -176,7 +176,7 @@ public class UserService {
     }
 
     @DeleteMapping("/{id}")
-    //@PreAuthorize("hasRole('GERENTE')")
+    @PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity deleteById(@PathVariable String id){
 
         User user = userRepository.findById(id).orElse(User.builder().build());
