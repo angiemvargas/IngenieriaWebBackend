@@ -48,7 +48,7 @@ public class UserService {
     JwtUtils jwtUtils;
 
     @PostMapping("/create")
-    @PreAuthorize("hasRole('GERENTE')")
+    //@PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity createUser(@RequestBody UserRequest userRequest) {
 
         User user = userRepository.findByEmail(userRequest.getEmail());
@@ -139,8 +139,8 @@ public class UserService {
                 .document(userRequest.getDocument())
                 .eps(userRequest.getEps())
                 .age(userRequest.getAge())
-                .salary(userRequest.getSalary());
-                //.password(encoder.encode(userRequest.getPassword()));
+                .salary(userRequest.getSalary())
+                .password(user.getPassword());
 
         Rol rol;
         if (Objects.isNull(userRequest.getRol())) {
