@@ -44,24 +44,15 @@ public class PetService {
                             .build());
         }
 
-        if (Boolean.TRUE.equals(pet.getIsShower())){
-
-            if (Objects.isNull(pet.getSpecifications())) {
-                return ResponseEntity
-                        .badRequest()
-                        .body(MessageResponse.builder()
-                                .message("Error: Faltan especificaciones para el spa")
-                                .build());
-            } else {
-                pet.getSpecifications()
-                        .stream()
-                        .map(specification -> {
-                            Specification obj = specificationRepository.findByCod(specification.getCod());
-                            specification.setName(obj.getName());
-                            return specification;
-                        })
-                        .collect(Collectors.toList());
-            }
+        if (Objects.nonNull(pet.getSpecifications())) {
+            pet.getSpecifications()
+                    .stream()
+                    .map(specification -> {
+                        Specification obj = specificationRepository.findByCod(specification.getCod());
+                        specification.setName(obj.getName());
+                        return specification;
+                    })
+                    .collect(Collectors.toList());
         }
 
         Pet petSave = petRepository.save(pet);
@@ -88,24 +79,15 @@ public class PetService {
                             .build());
         }
 
-        if (Boolean.TRUE.equals(pet.getIsShower())){
-
-            if (Objects.isNull(pet.getSpecifications())) {
-                return ResponseEntity
-                        .badRequest()
-                        .body(MessageResponse.builder()
-                                .message("Error: Faltan especificaciones para el spa")
-                                .build());
-            } else {
-                pet.getSpecifications()
-                        .stream()
-                        .map(specification -> {
-                            Specification obj = specificationRepository.findByCod(specification.getCod());
-                            specification.setName(obj.getName());
-                            return specification;
-                        })
-                        .collect(Collectors.toList());
-            }
+        if (Objects.nonNull(pet.getSpecifications())) {
+            pet.getSpecifications()
+                    .stream()
+                    .map(specification -> {
+                        Specification obj = specificationRepository.findByCod(specification.getCod());
+                        specification.setName(obj.getName());
+                        return specification;
+                    })
+                    .collect(Collectors.toList());
         }
 
         Pet petMongo = petRepository.findById(pet.getId())
