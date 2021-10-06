@@ -82,7 +82,7 @@ public class UserService {
                     rol = Rol.builder().id("2").name("ROLE_ADMIN").build();
                     break;
                 case "profesor":
-                    rol = Rol.builder().id("3").name("PROFESOR").build();
+                    rol = Rol.builder().id("3").name("ROLE_PROFESOR").build();
                     break;
                 case "gerente":
                     rol = Rol.builder().id("4").name("ROLE_GERENTE").build();
