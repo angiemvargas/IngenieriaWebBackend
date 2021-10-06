@@ -198,6 +198,42 @@ public class UserService {
                         .build());
     }
 
+    @GetMapping
+    @PreAuthorize("hasRole('GERENTE')")
+    public ResponseEntity getAllUser(){
+
+        List<User> list = userRepository.findAll();
+
+        list = list.stream()
+                .peek(user -> user.setPassword(null))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(list);
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('GERENTE')")
+    public ResponseEntity getUserById(@PathVariable String id){
+
+        User user = userRepository.findById(id).orElse(User.builder().build());
+
+        if (Objects.isNull(user.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(MessageResponse.builder()
+                            .message("Error: la usuario no existe")
+                            .build());
+        }
+
+        user.setPassword(null);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(user);
+    }
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
 
